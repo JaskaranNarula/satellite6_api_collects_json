@@ -1,0 +1,1 @@
+# satellite6_api_collects_json
