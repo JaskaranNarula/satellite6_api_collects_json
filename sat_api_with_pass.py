@@ -7,20 +7,19 @@ Email: narula.jaskaran@gmail.com
 import requests
 import json
 import sys
+from getpass import getpass 
 from requests.auth import HTTPBasicAuth
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 
 ## Variables
-for i in sys.argv:
-    creds = i.split("=")
-    if creds[0] == "--username":
-        USER = creds[1]
-    if creds[0] == "--password":
-        PASSWORD = creds[1]
-    if creds[0] == "--server":
-        SATILLITE_FQDN = creds[1]
+try:
+    USER = input("USER:")
+    SATELLITE_FQDN = input("SATELLITE_FQDN:")
+    PASSWORD = getpass("PASSWORD:")
+except Exception as error:
+    print('ERROR', error)
 
 def main():
     """
@@ -30,7 +29,7 @@ def main():
     2) /api/hosts?thin=1
     3) /api/hosts?thin=1\&per_page=10000
     """
-    URL = "http://" + SATILLITE_FQDN + "/api/hosts"
+    URL = "http://" + SATELLITE_FQDN + "/api/hosts"
     response = requests.get(URL, auth = HTTPBasicAuth(USER, PASSWORD), verify = False)
     data = json.loads(response.text)
     json_output = {
